@@ -8,7 +8,7 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import logo from "../../assets/957091c27de9b13a059e6413b82cdb1f734cc79a.png";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
 const INDIA_PREFIX = '+91';
 
 export default function PhoneLoginScreen() {

@@ -1,5 +1,5 @@
 // If VITE_BACKEND_URL is not set (production/hosted), use the current origin
-const API_BASE = (import.meta.env.VITE_BACKEND_URL as string | undefined) ?? "";
+const API_BASE = (import.meta.env.VITE_BACKEND_URL as string | undefined) ?? "http://localhost:3001";
 const FASTAPI_BASE = `${API_BASE}/ai-api`;
 
 export type VitalsPayload = {

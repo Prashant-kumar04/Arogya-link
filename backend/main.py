@@ -8,7 +8,7 @@ import pandas as pd
 from fastapi import Depends, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from pydantic_settings import BaseSettings
 
 # Get the directory where this script is located
@@ -23,9 +23,10 @@ class Settings(BaseSettings):
     risk_critical_threshold: float = 65.0
     allow_origins: List[str] = ["*"]
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+    model_config = ConfigDict(
+        env_file=".env",
+        protected_namespaces=("settings_",)
+    )
 
 
 settings = Settings()
@@ -608,3 +609,8 @@ async def receive_device_data(payload: DeviceDataPayload):
 @app.get("/")
 async def root():
     return {"message": "Arogya Link API running", "model_loaded": load_error is None}
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

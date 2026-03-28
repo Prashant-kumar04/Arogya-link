@@ -8,7 +8,8 @@
     "dev": "vite",
     "qr": "node generate-qr.js",
     "start": "node backend-server/server.js",
-    "railway": "npm run build && npm run start"
+    "start-all": "node start-all.js",
+    "run": "node run-all.js"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",

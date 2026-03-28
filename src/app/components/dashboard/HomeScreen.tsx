@@ -58,13 +58,29 @@ export default function HomeScreen() {
     }
   }, [health?.status]);
 
+  const fillRandomData = () => {
+    const data: VitalsPayload = {
+      age: Math.floor(Math.random() * (60 - 20) + 20),
+      sex: Math.random() > 0.5 ? 1 : 0,
+      cholesterol: Math.floor(Math.random() * (300 - 150) + 150),
+      heart_rate: Math.floor(Math.random() * (100 - 60) + 60),
+      diabetes: Math.random() > 0.8 ? 1 : 0,
+      smoking: Math.random() > 0.7 ? 1 : 0,
+      obesity: Math.random() > 0.8 ? 1 : 0,
+      alcohol_consumption: Math.floor(Math.random() * 5),
+      exercise_hours_per_week: Math.floor(Math.random() * 10),
+      previous_heart_problems: Math.random() > 0.9 ? 1 : 0,
+      stress_level: Math.floor(Math.random() * 10) + 1,
+      sedentary_hours_per_day: Math.floor(Math.random() * 12),
+      systolic: Math.floor(Math.random() * (140 - 110) + 110),
+      diastolic: Math.floor(Math.random() * (90 - 70) + 70),
+      sleep_hours_per_day: Math.floor(Math.random() * (9 - 5) + 5),
+      physical_activity_days_per_week: Math.floor(Math.random() * 7),
+    };
+    setEditVitals(data);
+  };
+
   const handlePredict = useCallback(async (source: "manual" | "smartwatch" | "demo" = "manual") => {
-    // Only block if truly nothing is entered
-    const anyFieldFilled = Object.values(editVitals).some(v => v !== undefined && v !== null);
-    if (!anyFieldFilled) {
-      setInputError('Please enter at least some health data to analyze.');
-      return;
-    }
     setInputError('');
 
     setLoading(true);
@@ -370,6 +386,13 @@ export default function HomeScreen() {
             >
               {loading ? "AI is Analyzing..." : "Run AI Health Assessment"}
             </Button>
+            <Button
+              variant="outline"
+              className="w-full h-11 border-dashed border-gray-300 text-gray-500 rounded-xl font-medium hover:bg-gray-50 hover:border-blue-300 hover:text-blue-600 transition-all"
+              onClick={fillRandomData}
+            >
+              🎲 Fill with Random Data
+            </Button>
             {inputError && (
               <p className="text-red-500 text-sm text-center bg-red-50 rounded-xl p-3 border border-red-200">
                 {inputError}
@@ -379,56 +402,58 @@ export default function HomeScreen() {
         </Card>
 
         {/* Chart */}
-        {health?.chartData && health.chartData.length > 0 && (
-          <Card className="p-5 border border-blue-50 bg-white shadow-sm rounded-2xl overflow-hidden">
-            <p className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-blue-500" />
-              Vitals Trendline
-            </p>
-            <ResponsiveContainer width="100%" height={200}>
-              <AreaChart data={health.chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="colorHr" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#ef4444" stopOpacity={0.1} />
-                    <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
-                  </linearGradient>
-                  <linearGradient id="colorBp" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.1} />
-                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                <XAxis dataKey="time" stroke="#9ca3af" fontSize={9} axisLine={false} tickLine={false} />
-                <YAxis stroke="#9ca3af" fontSize={9} axisLine={false} tickLine={false} />
-                <Tooltip
-                  contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
-                  itemStyle={{ fontSize: '12px', fontWeight: 'bold' }}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="heartRate"
-                  stroke="#ef4444"
-                  fillOpacity={1}
-                  fill="url(#colorHr)"
-                  strokeWidth={3}
-                  name="Heart Rate"
-                  dot={false}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="bp"
-                  stroke="#3b82f6"
-                  fillOpacity={1}
-                  fill="url(#colorBp)"
-                  strokeWidth={3}
-                  name="Systolic BP"
-                  dot={false}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </Card>
-        )}
-      </div>
+        {
+          health?.chartData && health.chartData.length > 0 && (
+            <Card className="p-5 border border-blue-50 bg-white shadow-sm rounded-2xl overflow-hidden">
+              <p className="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-blue-500" />
+                Vitals Trendline
+              </p>
+              <ResponsiveContainer width="100%" height={200}>
+                <AreaChart data={health.chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="colorHr" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#ef4444" stopOpacity={0.1} />
+                      <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient id="colorBp" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.1} />
+                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                  <XAxis dataKey="time" stroke="#9ca3af" fontSize={9} axisLine={false} tickLine={false} />
+                  <YAxis stroke="#9ca3af" fontSize={9} axisLine={false} tickLine={false} />
+                  <Tooltip
+                    contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                    itemStyle={{ fontSize: '12px', fontWeight: 'bold' }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="heartRate"
+                    stroke="#ef4444"
+                    fillOpacity={1}
+                    fill="url(#colorHr)"
+                    strokeWidth={3}
+                    name="Heart Rate"
+                    dot={false}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="bp"
+                    stroke="#3b82f6"
+                    fillOpacity={1}
+                    fill="url(#colorBp)"
+                    strokeWidth={3}
+                    name="Systolic BP"
+                    dot={false}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </Card>
+          )
+        }
+      </div >
     </>
   );
 }
