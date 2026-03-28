@@ -733,10 +733,10 @@ server.on('error', (e) => {
   }
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`\n${'='.repeat(50)}`);
-  console.log(`✅ AROGYA LINK BACKEND RUNNING`);
-  console.log(`🔗 URL     : http://localhost:${PORT}`);
+  console.log(`✅ AROGYA LINK BACKEND RUNNING (FLY.IO READY)`);
+  console.log(`🔗 URL     : http://0.0.0.0:${PORT}`);
   console.log(`📡 FASTAPI : ${FASTAPI_URL}`);
   console.log(`${'='.repeat(50)}\n`);
 });
